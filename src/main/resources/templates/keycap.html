@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>keycap ring ⌨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div>
+    <h1>keycap ring ⌨</h1>
+    <p class="sub">키캡을 눌러서 소리를 들어보세요</p>
+</div>
+
+<div class="card">
+    <div class="ctrl">
+        <span class="clbl">키캡 수</span>
+        <div class="stepper">
+            <button id="bm" aria-label="줄이기">−</button>
+            <span id="cd">3</span>
+            <button id="bp" aria-label="늘리기">+</button>
+        </div>
+        <span class="clbl">축</span>
+        <div class="swtog" role="group" aria-label="스위치 축 선택">
+            <button class="on" data-sw="blue"  onclick="setSw('blue')">청축</button>
+            <button            data-sw="red"   onclick="setSw('red')">적축</button>
+            <button            data-sw="brown" onclick="setSw('brown')">갈축</button>
+        </div>
+    </div>
+
+    <div class="scene">
+        <div class="ring" aria-hidden="true"></div>
+        <div class="chain" id="chain" aria-hidden="true"></div>
+        <div class="tray" id="tray" aria-label="키캡 키링"></div>
+    </div>
+
+    <div class="viz" id="viz" aria-hidden="true">
+        <div class="vb" id="v0"></div><div class="vb" id="v1"></div>
+        <div class="vb" id="v2"></div><div class="vb" id="v3"></div>
+        <div class="vb" id="v4"></div><div class="vb" id="v5"></div>
+        <div class="vb" id="v6"></div>
+    </div>
+
+    <div class="slog" id="slog" aria-live="polite">키캡을 눌러보세요!</div>
+</div>
+
+<script src="js/sound.js"></script>
+<script src="js/keyring.js"></script>
+</body>
+</html>

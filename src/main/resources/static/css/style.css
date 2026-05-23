@@ -1,0 +1,74 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#F7F0E3;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;gap:20px}
+h1{font-family:'Fredoka One',cursive;font-size:1.6rem;color:#6B4F2A;letter-spacing:.5px;text-align:center}
+.sub{font-size:.75rem;color:#A07B45;font-weight:800;margin-top:3px;text-align:center}
+.card{background:#EFE5CE;border-radius:24px;padding:22px 22px 26px;border:2.5px solid #DDD0B3;box-shadow:0 6px 24px rgba(107,79,42,.09);display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:480px}
+
+/* 컨트롤 */
+.ctrl{background:#FBF6ED;border:1.5px solid #DDD0B3;border-radius:14px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.clbl{font-size:.75rem;font-weight:800;color:#A07B45}
+.stepper{display:flex;align-items:center;background:#fff;border:1.5px solid #DDD0B3;border-radius:9px;overflow:hidden}
+.stepper button{width:26px;height:26px;border:none;background:transparent;color:#6B4F2A;font-size:.9rem;font-weight:900;cursor:pointer}
+.stepper button:hover{background:#F7F0E3}
+.stepper span{font-family:'Fredoka One',cursive;font-size:.95rem;color:#6B4F2A;min-width:22px;text-align:center;border-left:1.5px solid #DDD0B3;border-right:1.5px solid #DDD0B3;height:26px;line-height:26px}
+.swtog{display:flex;background:#fff;border:1.5px solid #DDD0B3;border-radius:9px;overflow:hidden}
+.swtog button{padding:4px 10px;border:none;background:transparent;color:#A07B45;font-family:'Nunito',sans-serif;font-size:.72rem;font-weight:800;cursor:pointer;border-right:1.5px solid #DDD0B3;white-space:nowrap;transition:background .12s,color .12s}
+.swtog button:last-child{border-right:none}
+.swtog button.on{background:#C8A86B;color:#fff}
+
+/* 키링 씬 — 가로 배치 */
+.scene{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0}
+
+/* 메탈 고리 */
+.ring{width:22px;height:22px;border:4.5px solid #B8B8C4;border-radius:50%;flex-shrink:0;position:relative;box-shadow:inset -1px -1px 0 #888898}
+.ring::after{content:'';position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:9px;height:4px;background:#B8B8C4;border-radius:0 2px 2px 0}
+
+/* 체인 */
+.chain{display:flex;flex-direction:row;align-items:center;flex-shrink:0}
+.cl{width:5px;height:8px;border:2px solid #BDBDCC;border-radius:3px;background:transparent}
+.cl:nth-child(odd){transform:rotate(90deg);width:8px;height:5px}
+
+/* 투명 플라스틱 트레이 */
+.tray{background:rgba(228,218,198,.45);border:2px solid #C8B896;border-radius:12px;padding:8px 10px 9px;box-shadow:inset 0 2px 6px rgba(255,255,255,.55),inset 0 -2px 3px rgba(0,0,0,.04),0 3px 12px rgba(107,79,42,.09);display:flex;flex-direction:row;flex-wrap:nowrap;gap:6px;align-items:flex-end;justify-content:center}
+.tray.multi{flex-wrap:wrap;max-width:210px}
+
+/* 키캡 유닛 */
+.unit{display:flex;flex-direction:column;align-items:center;animation:pop .28s cubic-bezier(.68,-.55,.27,1.55) both}
+@keyframes pop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
+.stem{width:6px;height:5px;border-radius:1px 1px 0 0;position:relative;z-index:2}
+.stem.blue{background:#5DADE2}.stem.red{background:#E57373}.stem.brown{background:#A1887F}
+.hous{width:30px;height:10px;background:#D8CCBA;border:1px solid #C0B098;border-bottom:none;border-radius:2px 2px 0 0}
+.keycap{width:30px;height:32px;border-radius:5px 5px 3px 3px;border:none;outline:none;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;position:relative;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-size:.5rem;font-weight:900;color:rgba(255,255,255,.93);text-shadow:0 1px 2px rgba(0,0,0,.18);box-shadow:0 3px 0 var(--ks),0 4px 6px rgba(0,0,0,.1);transition:transform .06s,box-shadow .06s}
+.keycap::before{content:'';position:absolute;top:4px;left:3px;right:3px;height:6px;border-radius:2px;background:rgba(255,255,255,.45)}
+.keycap:hover{transform:translateY(-2px)}
+.keycap.dn{transform:translateY(3px)!important;box-shadow:0 1px 0 var(--ks),0 2px 3px rgba(0,0,0,.09)!important}
+
+/* 축별 색상 */
+.keycap.blue {--ks:#2471A3;background:#5DADE2}
+.keycap.red  {--ks:#B03A2E;background:#E57373}
+.keycap.brown{--ks:#6D4C41;background:#A1887F}
+.keycap.p0   {--ks:#C07080;background:#F4C2CC;color:#7A2840;text-shadow:none}
+.keycap.p1   {--ks:#68A888;background:#C2DDD0;color:#1E5C40;text-shadow:none}
+.keycap.p2   {--ks:#6878C8;background:#C2CCF0;color:#1E3070;text-shadow:none}
+
+/* 팝 뱃지 */
+.badge{position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:#FBF6ED;border:1.5px solid #DDD0B3;border-radius:999px;padding:1px 5px;font-size:.5rem;font-weight:800;color:#6B4F2A;white-space:nowrap;pointer-events:none;animation:bup .75s ease-out forwards}
+@keyframes bup{0%{opacity:1;transform:translateX(-50%) translateY(0)}70%{opacity:1;transform:translateX(-50%) translateY(-9px)}100%{opacity:0;transform:translateX(-50%) translateY(-15px)}}
+
+/* 비주얼라이저 */
+.viz{display:flex;align-items:flex-end;gap:2px;height:20px;opacity:0;transition:opacity .2s}
+.viz.on{opacity:1}
+.vb{width:4px;min-height:2px;background:#C8A86B;border-radius:2px 2px 0 0}
+
+/* 사운드 로그 */
+.slog{font-size:.75rem;font-weight:800;color:#A07B45;min-height:16px;text-align:center}
+
+/* 모바일 */
+@media(max-width:400px){
+  .card{padding:16px 14px 20px;border-radius:18px}
+  .keycap{width:26px;height:28px}
+  .hous{width:26px;height:8px}
+  .stem{width:5px;height:4px}
+  .tray{gap:5px;padding:7px 8px 8px}
+  .tray.multi{max-width:180px}
+}
