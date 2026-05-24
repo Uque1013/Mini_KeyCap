@@ -3,48 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>keycap ring ⌨</title>
+    <title>keycap ring — 스위치 소리 체험</title>
+    <meta name="description" content="키캡 키링의 스위치 소리를 온라인으로 체험해보세요. 청축, 적축, 갈축 선택 가능.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div>
-    <h1>keycap ring ⌨</h1>
-    <p class="sub">키캡을 눌러서 소리를 들어보세요</p>
-</div>
+<header class="header">
+    <span class="header-kicker">Sound Experience</span>
+    <h1>keycap <em>ring</em></h1>
+    <p class="header-desc">스위치 축을 선택하고 키캡을 눌러 소리를 들어보세요</p>
+</header>
 
 <div class="card">
-    <div class="ctrl">
-        <span class="clbl">키캡 수</span>
-        <div class="stepper">
-            <button id="bm" aria-label="줄이기">−</button>
-            <span id="cd">3</span>
-            <button id="bp" aria-label="늘리기">+</button>
+
+    <!-- 컨트롤 바 -->
+    <div class="ctrl-bar">
+        <div class="ctrl-group">
+            <span class="ctrl-label">키캡</span>
+            <div class="stepper">
+                <button id="btnMinus" aria-label="키캡 줄이기">−</button>
+                <span class="cnt" id="countDisplay">4</span>
+                <button id="btnPlus" aria-label="키캡 늘리기">+</button>
+            </div>
         </div>
-        <span class="clbl">축</span>
-        <div class="swtog" role="group" aria-label="스위치 축 선택">
-            <button class="on" data-sw="blue"  onclick="setSw('blue')">청축</button>
-            <button            data-sw="red"   onclick="setSw('red')">적축</button>
-            <button            data-sw="brown" onclick="setSw('brown')">갈축</button>
+        <div class="ctrl-group">
+            <span class="ctrl-label">스위치</span>
+            <div class="sw-toggle" role="group" aria-label="스위치 축 선택">
+                <button class="on" data-sw="blue">청축</button>
+                <button data-sw="red">적축</button>
+                <button data-sw="brown">갈축</button>
+            </div>
         </div>
     </div>
 
-    <div class="scene">
-        <div class="ring" aria-hidden="true"></div>
-        <div class="chain" id="chain" aria-hidden="true"></div>
-        <div class="tray" id="tray" aria-label="키캡 키링"></div>
+    <!-- 메인 스테이지 -->
+    <div class="stage">
+
+        <!-- 키링 씬: 고리 — 체인 — 케이스 -->
+        <div class="scene" role="region" aria-label="키캡 키링">
+            <div class="ring" aria-hidden="true"></div>
+            <div class="chain" id="chain" aria-hidden="true"></div>
+            <div class="key-case" id="keyCase"></div>
+        </div>
+
+        <!-- 상태 로그 -->
+        <div class="log-wrap" aria-live="polite">
+            <div class="log-key" id="logKey">— · — · —</div>
+            <div class="log-sub" id="logSub">키캡을 눌러보세요</div>
+        </div>
+
+        <!-- 비주얼라이저 -->
+        <div class="viz-wrap" id="vizWrap" aria-hidden="true" style="--vcolor:#82B4CC">
+            <div class="viz-bar" id="vb0"></div>
+            <div class="viz-bar" id="vb1"></div>
+            <div class="viz-bar" id="vb2"></div>
+            <div class="viz-bar" id="vb3"></div>
+            <div class="viz-bar" id="vb4"></div>
+            <div class="viz-bar" id="vb5"></div>
+            <div class="viz-bar" id="vb6"></div>
+        </div>
+
     </div>
 
-    <div class="viz" id="viz" aria-hidden="true">
-        <div class="vb" id="v0"></div><div class="vb" id="v1"></div>
-        <div class="vb" id="v2"></div><div class="vb" id="v3"></div>
-        <div class="vb" id="v4"></div><div class="vb" id="v5"></div>
-        <div class="vb" id="v6"></div>
+    <!-- 카드 푸터 -->
+    <div class="card-footer">
+        <span class="footer-brand">Keycap Ring ⌨</span>
+        <div class="footer-tags">
+            <span class="tag">Clicky</span>
+            <span class="tag">Linear</span>
+            <span class="tag">Tactile</span>
+        </div>
     </div>
 
-    <div class="slog" id="slog" aria-live="polite">키캡을 눌러보세요!</div>
 </div>
 
 <script src="js/sound.js"></script>

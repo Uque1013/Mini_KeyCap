@@ -1,103 +1,137 @@
-const SW = {
-  blue:  { n: '청축', s: '딸깍! (Clicky)' },
-  red:   { n: '적축', s: '도각~ (Linear)' },
-  brown: { n: '갈축', s: '서각! (Tactile)' }
+'use strict';
+
+const SW_META = {
+  blue:  { name: '청축', label: 'Clicky',  vcolor: '#82B4CC' },
+  red:   { name: '적축', label: 'Linear',  vcolor: '#D8A4A0' },
+  brown: { name: '갈축', label: 'Tactile', vcolor: '#C4AA84' },
 };
-const PA = ['p0', 'p1', 'p2'];
 
-let cnt = 3, sw = 'blue', vt = null;
+let count   = 4;
+let swType  = 'blue';
+let vizTimer = null;
 
+/* ── 체인 렌더 ── */
 function buildChain() {
-  const chain = document.getElementById('chain');
-  chain.innerHTML = '';
-  for (let i = 0; i < 3 + Math.floor(cnt * .4); i++) {
+  const el = document.getElementById('chain');
+  el.innerHTML = '';
+  const links = 4 + Math.floor(count * .35);
+  for (let i = 0; i < links; i++) {
     const l = document.createElement('div');
-    l.className = 'cl';
-    chain.appendChild(l);
+    l.className = 'chain-link';
+    el.appendChild(l);
   }
 }
 
-function buildTray() {
-  const tray = document.getElementById('tray');
-  tray.innerHTML = '';
-  tray.classList.toggle('multi', cnt >= 6);
+/* ── 케이스 + 키캡 렌더 ── */
+function buildCase() {
+  const kc = document.getElementById('keyCase');
+  kc.innerHTML = '';
 
-  for (let i = 0; i < cnt; i++) {
-    const cc = i >= 3 ? PA[(i - 3) % 3] : sw;
+  /* 6개 이상 → 한 줄에 3개씩 */
+  kc.classList.toggle('multi', count >= 6);
 
+  for (let i = 0; i < count; i++) {
     const unit = document.createElement('div');
-    unit.className = 'unit';
-    unit.style.animationDelay = (i * .05) + 's';
-
-    const stem = document.createElement('div');
-    stem.className = 'stem ' + sw;
-
-    const hous = document.createElement('div');
-    hous.className = 'hous';
+    unit.className = 'cap-unit';
+    unit.style.animationDelay = (i * .048) + 's';
 
     const cap = document.createElement('button');
-    cap.className = 'keycap ' + cc;
-    cap.textContent = i + 1;
-    cap.setAttribute('aria-label', `키캡 ${i + 1} — ${SW[sw].n}`);
+    cap.className = 'keycap ' + swType;
+    cap.setAttribute('aria-label', `키캡 ${i + 1} — ${SW_META[swType].name}`);
+
+    const kn = document.createElement('span');
+    kn.className = 'kn';
+    kn.textContent = i + 1;
+    cap.appendChild(kn);
 
     cap.addEventListener('pointerdown', e => {
       e.preventDefault();
-      cap.classList.add('dn');
-      SoundEngine.play(sw);
-      document.getElementById('slog').textContent =
-        `KEY ${i + 1} (${SW[sw].n}): ${SW[sw].s}`;
-      const b = document.createElement('div');
-      b.className = 'badge';
-      b.textContent = SW[sw].s.split(' ')[0];
-      cap.appendChild(b);
-      setTimeout(() => b.remove(), 760);
-      runViz();
+      cap.classList.add('pressed');
+      SoundEngine.play(swType);
+      updateLog(i + 1);
+      showBadge(cap);
+      triggerViz();
     });
-    cap.addEventListener('pointerup',    () => cap.classList.remove('dn'));
-    cap.addEventListener('pointerleave', () => cap.classList.remove('dn'));
+    cap.addEventListener('pointerup',    () => cap.classList.remove('pressed'));
+    cap.addEventListener('pointerleave', () => cap.classList.remove('pressed'));
 
-    unit.appendChild(stem);
-    unit.appendChild(hous);
     unit.appendChild(cap);
-    tray.appendChild(unit);
+    kc.appendChild(unit);
   }
 }
 
-function runViz() {
-  const v = document.getElementById('viz');
-  v.classList.add('on');
-  clearTimeout(vt);
-  let f = 0;
-  const go = () => {
-    for (let i = 0; i < 7; i++)
-      document.getElementById('v' + i).style.height =
-        Math.max(2, Math.random() * 16 + (f < 4 ? 5 : 0)) + 'px';
-    f++;
-    if (f < 14) requestAnimationFrame(go);
-    else {
-      for (let i = 0; i < 7; i++)
-        document.getElementById('v' + i).style.height = '2px';
-      vt = setTimeout(() => v.classList.remove('on'), 250);
-    }
-  };
-  requestAnimationFrame(go);
+/* ── 로그 업데이트 ── */
+function updateLog(keyNum) {
+  const meta = SW_META[swType];
+  const lk = document.getElementById('logKey');
+  const ls = document.getElementById('logSub');
+  lk.textContent = `KEY ${keyNum}  ·  ${meta.name}  ·  ${meta.label}`;
+  lk.classList.add('on');
+  ls.textContent = '소리가 재생됩니다';
+  ls.classList.add('on');
 }
 
-function setSw(t) {
-  sw = t;
-  document.querySelectorAll('.swtog button').forEach(b =>
-    b.classList.toggle('on', b.dataset.sw === t)
+/* ── 팝 뱃지 ── */
+function showBadge(cap) {
+  const b = document.createElement('div');
+  b.className = 'pop-badge';
+  b.textContent = SW_META[swType].label;
+  cap.appendChild(b);
+  setTimeout(() => b.remove(), 740);
+}
+
+/* ── 비주얼라이저 ── */
+function triggerViz() {
+  const wrap = document.getElementById('vizWrap');
+  wrap.style.setProperty('--vcolor', SW_META[swType].vcolor);
+  wrap.classList.add('on');
+  clearTimeout(vizTimer);
+
+  let frame = 0;
+  const tick = () => {
+    for (let i = 0; i < 7; i++) {
+      document.getElementById('vb' + i).style.height =
+        Math.max(3, Math.random() * 22 + (frame < 5 ? 5 : 0)) + 'px';
+    }
+    frame++;
+    if (frame < 16) {
+      requestAnimationFrame(tick);
+    } else {
+      for (let i = 0; i < 7; i++)
+        document.getElementById('vb' + i).style.height = '3px';
+      vizTimer = setTimeout(() => wrap.classList.remove('on'), 260);
+    }
+  };
+  requestAnimationFrame(tick);
+}
+
+/* ── 스위치 변경 ── */
+function setSw(type) {
+  swType = type;
+  document.querySelectorAll('.sw-toggle button').forEach(b =>
+    b.classList.toggle('on', b.dataset.sw === type)
   );
   render();
 }
 
+/* ── 전체 렌더 ── */
 function render() {
-  document.getElementById('cd').textContent = cnt;
+  document.getElementById('countDisplay').textContent = count;
   buildChain();
-  buildTray();
+  buildCase();
 }
 
-document.getElementById('bm').addEventListener('click', () => { if (cnt > 3) { cnt--; render(); } });
-document.getElementById('bp').addEventListener('click', () => { if (cnt < 9) { cnt++; render(); } });
+/* ── 이벤트 바인딩 ── */
+document.getElementById('btnMinus').addEventListener('click', () => {
+  if (count > 3) { count--; render(); }
+});
+document.getElementById('btnPlus').addEventListener('click', () => {
+  if (count < 9) { count++; render(); }
+});
 
+document.querySelectorAll('.sw-toggle button').forEach(btn =>
+  btn.addEventListener('click', () => setSw(btn.dataset.sw))
+);
+
+/* 최초 렌더 */
 render();
